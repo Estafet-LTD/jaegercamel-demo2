@@ -9,6 +9,8 @@ import org.apache.camel.spi.ThreadPoolProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class CamelBatchValidator extends RouteBuilder {
     @Autowired
@@ -17,10 +19,16 @@ public class CamelBatchValidator extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         ThreadPoolProfile profile = new ThreadPoolProfile("bigPool");
+        profile.setMaxPoolSize(200);
+        profile.setMaxQueueSize(200);
+        profile.setPoolSize(100);
+        profile.setKeepAliveTime(1L);
+        profile.setTimeUnit(TimeUnit.MINUTES);
+
+        profile.setRejectedPolicy(ThreadPoolRejectedPolicy.DiscardOldest);
+
         context.getExecutorServiceManager().registerThreadPoolProfile(profile);
 
-        profile.setMaxPoolSize(200);
-        profile.setRejectedPolicy(ThreadPoolRejectedPolicy.DiscardOldest);
         String validator_url = System.getenv("VALIDATOR_URL");
         from("netty4-http:http://0.0.0.0:8080/batchPrime")
                 .unmarshal().json(JsonLibrary.Jackson, PrimeBatch.class)
