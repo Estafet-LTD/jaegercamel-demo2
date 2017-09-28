@@ -19,9 +19,9 @@ public class CamelBatchValidator extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         ThreadPoolProfile profile = new ThreadPoolProfile("bigPool");
-        profile.setMaxPoolSize(200);
-        profile.setMaxQueueSize(200);
-        profile.setPoolSize(100);
+        profile.setMaxPoolSize(100);
+        profile.setMaxQueueSize(100);
+        profile.setPoolSize(20);
         profile.setKeepAliveTime(1L);
         profile.setTimeUnit(TimeUnit.MINUTES);
 
