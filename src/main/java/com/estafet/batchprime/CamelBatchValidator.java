@@ -11,7 +11,7 @@ public class CamelBatchValidator extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         String validator_url = System.getenv("VALIDATOR_URL");
-        from("netty4-http:http://0.0.0.0:8081/batchPrime")
+        from("netty4-http:http://0.0.0.0:8080/batchPrime")
                 .unmarshal().json(JsonLibrary.Jackson, PrimeBatch.class)
                 .split().simple("body.getPrimeList()")
                 .parallelProcessing()
