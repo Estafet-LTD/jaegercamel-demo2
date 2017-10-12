@@ -2,7 +2,7 @@
 This project is part of a Camel demo with Jaeger using microservices. This project is deployable to Openshift using S2I
 See also jaegercamel-demo1
 
---
+---
 Exposed endpoint: POST http://0.0.0.0:8080/batchPrime
 
 Expected body example:
