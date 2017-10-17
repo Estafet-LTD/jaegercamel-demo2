@@ -23,9 +23,7 @@ public class CamelBatchValidator extends RouteBuilder {
                     .to("log:foo")
                 .end()
                 .setBody()
-                .simple("All done here!")
-                .to("stream:out");
-        ;
+                .simple("All done here!");
 
     }
 }
