@@ -15,12 +15,17 @@ public class CamelBatchValidator extends RouteBuilder {
         from("netty4-http:http://0.0.0.0:8080/batchPrime")
                 .unmarshal().json(JsonLibrary.Jackson, PrimeBatch.class)
                 .split().simple("body.getPrimeList()")
-                .parallelProcessing()
-                .convertBodyTo(String.class)
-                .setHeader(Exchange.HTTP_QUERY, simple("num=${body}"))
-                .to("http://" + validator_url + "/isPrime?bridgeEndpoint=true")
-                .convertBodyTo(String.class)
-                .to("log:foo")
-                .end();
+                    .parallelProcessing()
+                    .convertBodyTo(String.class)
+                    .setHeader(Exchange.HTTP_QUERY, simple("num=${body}"))
+                    .to("http://" + validator_url + "/isPrime?bridgeEndpoint=true")
+                    .convertBodyTo(String.class)
+                    .to("log:foo")
+                .end()
+                .setBody()
+                .simple("All done here!")
+                .to("stream:out");
+        ;
+
     }
 }
